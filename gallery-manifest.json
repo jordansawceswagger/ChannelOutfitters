@@ -1,8 +1,5 @@
 {
   "fishing": [
-    "images/fishing/01-brown-trout.jpg",
-    "images/fishing/02-client-trout.jpg",
-    "images/fishing/03-drift-boat.jpg",
     "images/fishing/06-pelican-river.jpg",
     "images/fishing/07-sunset-river.jpg",
     "images/fishing/08-storm-canyon.jpg",
@@ -53,7 +50,6 @@
     "images/fishing/IMG_1020.jpg",
     "images/fishing/IMG_1036.jpg",
     "images/fishing/IMG_1152 2.jpg",
-    "images/fishing/IMG_1152 3.jpg",
     "images/fishing/IMG_1166.jpg",
     "images/fishing/IMG_1297.jpg",
     "images/fishing/IMG_1354_mobile.jpg",
@@ -97,10 +93,6 @@
     "images/fishing/mail.jpeg"
   ],
   "hunting": [
-    "images/hunting/04-elk.jpg",
-    "images/hunting/05-mule-deer.jpg",
-    "images/hunting/09-lodge-kitchen.jpg",
-    "images/hunting/10-hidden-canyon.jpg",
     "images/hunting/Herd of Montana elk.jpg",
     "images/hunting/hidden-canyon-lodge.jpg",
     "images/hunting/IG_0765_2_edited.jpg",
@@ -112,7 +104,6 @@
     "images/hunting/trophy-mule-deer.jpg",
     "images/hunting/AdobeStock_444174371_Preview.jpeg",
     "images/hunting/AdobeStock_444174371.jpeg",
-    "images/hunting/IG_0765_2.jpeg",
     "images/hunting/Resized_20250912_193245.jpeg"
   ]
 }
