@@ -30,13 +30,10 @@
       <!--
         ============================================================
         HOW TO ADD PHOTOS:
-        
-        1. Put your photos in the images/gallery/ folder
-        2. Add one line per photo to the GALLERY_IMAGES array below
-        3. That's it. The grid + lightbox builds itself.
-        
-        Supported formats: .jpg, .jpeg, .png, .webp
-        Recommended: resize to ~1600px wide max for fast loading
+
+        1. Drop photos into images/fishing/ or images/hunting/
+        2. Run ./update-gallery.sh to rebuild the manifest
+        3. Commit & push. That's it.
         ============================================================
       -->
 
@@ -62,41 +59,26 @@
 
   <script src="main.js"></script>
   <script>
-    // ============================================================
-    // GALLERY CONFIG — EDIT THIS ARRAY TO ADD/REMOVE PHOTOS
-    // 
-    // Just add entries like: { src: 'images/gallery/filename.jpg', alt: 'Description' }
-    // Drop your photos in images/gallery/ and list them here.
-    // ============================================================
-    const GALLERY_IMAGES = [
-      { src: 'images/gallery/01-brown-trout.jpg', alt: 'Lindsey with large brown trout on Missouri River' },
-      { src: 'images/gallery/02-client-trout.jpg', alt: 'Happy client with brown trout' },
-      { src: 'images/gallery/03-drift-boat.jpg', alt: 'Guide and clients on Missouri River drift boat' },
-      { src: 'images/gallery/04-elk.jpg', alt: 'Trophy bull elk in eastern Montana' },
-      { src: 'images/gallery/05-mule-deer.jpg', alt: 'Trophy mule deer in Bull Mountains' },
-      { src: 'images/gallery/06-pelican-river.jpg', alt: 'White pelican on the Missouri River' },
-      { src: 'images/gallery/07-sunset-river.jpg', alt: 'Stunning sunset over Missouri River canyon' },
-      { src: 'images/gallery/08-storm-canyon.jpg', alt: 'Dramatic storm light over Missouri River canyon' },
-      { src: 'images/gallery/09-lodge-kitchen.jpg', alt: 'Musselshell hunting lodge kitchen' },
-      { src: 'images/gallery/10-hidden-canyon.jpg', alt: 'Hidden Canyon Lodge exterior' },
-      // ADD MORE: just drop photos in images/gallery/ and add lines here
-    ];
-
-    // Build gallery grid from array
-    (function() {
-      const grid = document.getElementById('gallery-grid');
-      if (!grid || GALLERY_IMAGES.length === 0) {
-        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;opacity:.5;font-style:italic;padding:60px 0;">Gallery photos coming soon. Check back!</p>';
-        return;
-      }
-      GALLERY_IMAGES.forEach(img => {
-        const el = document.createElement('img');
-        el.src = img.src;
-        el.alt = img.alt || 'Channel Outfitters';
-        el.loading = 'lazy';
-        grid.appendChild(el);
+    // Load gallery from manifest (all photos from both categories)
+    fetch('gallery-manifest.json')
+      .then(r => r.json())
+      .then(data => {
+        const grid = document.getElementById('gallery-grid');
+        const allPhotos = (data.fishing || []).concat(data.hunting || []);
+        if (!grid || allPhotos.length === 0) {
+          grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;opacity:.5;font-style:italic;padding:60px 0;">Gallery photos coming soon. Check back!</p>';
+          return;
+        }
+        allPhotos.forEach(src => {
+          const el = document.createElement('img');
+          el.src = src;
+          el.alt = 'Channel Outfitters';
+          el.loading = 'lazy';
+          grid.appendChild(el);
+        });
+        // Re-init lightbox for dynamically added images
+        if (window.initLightbox) window.initLightbox();
       });
-    })();
   </script>
 </body>
 </html>

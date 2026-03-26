@@ -45,16 +45,15 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // --- Lightbox Gallery ---
-  const galleryImages = document.querySelectorAll('.gallery-grid img');
   const lightbox = document.getElementById('lightbox');
-  if (galleryImages.length && lightbox) {
+  if (lightbox) {
     const lbImg = lightbox.querySelector('.lightbox-img');
     const lbCounter = lightbox.querySelector('.lightbox-counter');
     const lbClose = lightbox.querySelector('.lightbox-close');
     const lbPrev = lightbox.querySelector('.lightbox-prev');
     const lbNext = lightbox.querySelector('.lightbox-next');
     let currentIdx = 0;
-    const imgs = Array.from(galleryImages);
+    let imgs = [];
 
     function showImage(idx) {
       currentIdx = (idx + imgs.length) % imgs.length;
@@ -74,9 +73,19 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = '';
     }
 
-    imgs.forEach((img, i) => {
-      img.addEventListener('click', () => openLightbox(i));
-    });
+    function initLightbox() {
+      imgs = Array.from(document.querySelectorAll('.gallery-grid img'));
+      imgs.forEach((img, i) => {
+        img.style.cursor = 'pointer';
+        img.onclick = () => openLightbox(i);
+      });
+    }
+
+    // Init immediately for any static images
+    initLightbox();
+
+    // Expose for dynamic gallery loading
+    window.initLightbox = initLightbox;
 
     if (lbClose) lbClose.addEventListener('click', closeLightbox);
     if (lbPrev) lbPrev.addEventListener('click', () => showImage(currentIdx - 1));

@@ -1,0 +1,24 @@
+{
+  "fishing": [
+    "images/fishing/01-brown-trout.jpg",
+    "images/fishing/02-client-trout.jpg",
+    "images/fishing/03-drift-boat.jpg",
+    "images/fishing/06-pelican-river.jpg",
+    "images/fishing/07-sunset-river.jpg",
+    "images/fishing/08-storm-canyon.jpg",
+    "images/fishing/client-brown-trout.jpg",
+    "images/fishing/drift-boat-guide.jpg",
+    "images/fishing/lindsey-brown-trout.jpg",
+    "images/fishing/lindsey-holly.jpg"
+  ],
+  "hunting": [
+    "images/hunting/04-elk.jpg",
+    "images/hunting/05-mule-deer.jpg",
+    "images/hunting/09-lodge-kitchen.jpg",
+    "images/hunting/10-hidden-canyon.jpg",
+    "images/hunting/hidden-canyon-lodge.jpg",
+    "images/hunting/musselshell-lodge-kitchen.jpg",
+    "images/hunting/trophy-elk.jpg",
+    "images/hunting/trophy-mule-deer.jpg"
+  ]
+}

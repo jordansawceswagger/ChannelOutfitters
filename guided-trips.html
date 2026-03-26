@@ -72,7 +72,7 @@
         </div>
         <div>
           <!-- REPLACE: fishing action photo with red border -->
-          <div class="two-col-img"><img src="images/drift-boat-guide.jpg" alt="Guide and clients on Missouri River drift boat" loading="lazy"></div>
+          <div class="two-col-img"><img src="images/fishing/drift-boat-guide.jpg" alt="Guide and clients on Missouri River drift boat" loading="lazy"></div>
         </div>
       </div>
     </div>
@@ -242,25 +242,22 @@
   </footer>
   <script src="main.js"></script>
   <script>
-    // FISHING GALLERY — add/remove photos here
-    const FISHING_GALLERY = [
-      { src: 'images/gallery/01-brown-trout.jpg', alt: 'Large brown trout on Missouri River' },
-      { src: 'images/gallery/02-client-trout.jpg', alt: 'Happy client with brown trout' },
-      { src: 'images/gallery/03-drift-boat.jpg', alt: 'Guide and clients on drift boat' },
-      { src: 'images/gallery/06-pelican-river.jpg', alt: 'White pelican on the Missouri River' },
-      { src: 'images/gallery/07-sunset-river.jpg', alt: 'Sunset over Missouri River canyon' },
-      { src: 'images/gallery/08-storm-canyon.jpg', alt: 'Storm light over Missouri River' },
-      // ADD MORE FISHING PHOTOS HERE
-    ];
-    (function() {
-      const grid = document.getElementById('fishing-gallery-grid');
-      if (!grid || FISHING_GALLERY.length === 0) return;
-      FISHING_GALLERY.forEach(img => {
-        const el = document.createElement('img');
-        el.src = img.src; el.alt = img.alt || ''; el.loading = 'lazy';
-        grid.appendChild(el);
+    // Load fishing gallery from manifest
+    fetch('gallery-manifest.json')
+      .then(r => r.json())
+      .then(data => {
+        const grid = document.getElementById('fishing-gallery-grid');
+        const photos = data.fishing || [];
+        if (!grid || photos.length === 0) return;
+        photos.forEach(src => {
+          const el = document.createElement('img');
+          el.src = src;
+          el.alt = 'Channel Outfitters fishing';
+          el.loading = 'lazy';
+          grid.appendChild(el);
+        });
+        if (window.initLightbox) window.initLightbox();
       });
-    })();
   </script>
 </body>
 </html>

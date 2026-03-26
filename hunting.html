@@ -32,9 +32,9 @@
 
       <!-- Hunting photo row -->
       <div class="photo-row fade-in">
-        <div class="photo-frame"><img src="images/trophy-elk.jpg" alt="Trophy elk in Bull Mountains" loading="lazy"></div>
-        <div class="photo-frame"><img src="images/trophy-mule-deer.jpg" alt="Trophy mule deer eastern Montana" loading="lazy"></div>
-        <div class="photo-frame"><img src="images/drift-boat-guide.jpg" alt="Channel Outfitters guide" loading="lazy"></div>
+        <div class="photo-frame"><img src="images/hunting/trophy-elk.jpg" alt="Trophy elk in Bull Mountains" loading="lazy"></div>
+        <div class="photo-frame"><img src="images/hunting/trophy-mule-deer.jpg" alt="Trophy mule deer eastern Montana" loading="lazy"></div>
+        <div class="photo-frame"><img src="images/hunting/09-lodge-kitchen.jpg" alt="Musselshell hunting lodge kitchen" loading="lazy"></div>
       </div>
     </div>
   </section>
@@ -83,24 +83,22 @@
   <footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-about"><img src="images/logo.png" alt="Channel Outfitters" style="height:60px;margin-bottom:12px;" onerror="this.style.display='none'"><p>Montana's Missouri River fly fishing specialist. Guided fly fishing trips and trophy hunting since 1998.</p><div class="footer-social"><a href="https://www.facebook.com/channeloutfitters" aria-label="Facebook" target="_blank">FB</a><a href="https://www.instagram.com/channeloutfitters" aria-label="Instagram" target="_blank">IG</a></div></div><div><h4>Trips</h4><ul class="footer-links"><li><a href="guided-trips.html">Guided Fly Fishing</a></li><li><a href="hunting.html">Trophy Hunting</a></li><li><a href="lodging.html">Lodging</a></li><li><a href="gallery.html">Gallery</a></li></ul></div><div><h4>Company</h4><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div><div><h4>Contact</h4><ul class="footer-links"><li><a href="tel:4062612772">406-261-2772</a></li><li><a href="mailto:channeloutfitters1@gmail.com">channeloutfitters1@gmail.com</a></li><li style="opacity:.5;font-size:.85rem;margin-top:10px;">Channel Outfitters LLC<br>Outfitter# 7886<br>Bigfork, Montana</li></ul></div></div><div class="footer-bottom">&copy; 2026 Channel Outfitters LLC. All rights reserved.</div></div></footer>
   <script src="main.js"></script>
   <script>
-    // HUNTING GALLERY — add/remove photos here
-    const HUNTING_GALLERY = [
-      { src: 'images/gallery/04-elk.jpg', alt: 'Trophy bull elk in eastern Montana' },
-      { src: 'images/gallery/05-mule-deer.jpg', alt: 'Trophy mule deer in Bull Mountains' },
-      { src: 'images/gallery/09-lodge-kitchen.jpg', alt: 'Musselshell hunting lodge kitchen' },
-      { src: 'images/gallery/10-hidden-canyon.jpg', alt: 'Hidden Canyon Lodge' },
-      { src: 'images/gallery/08-storm-canyon.jpg', alt: 'Eastern Montana landscape' },
-      // ADD MORE HUNTING PHOTOS HERE
-    ];
-    (function() {
-      const grid = document.getElementById('hunting-gallery-grid');
-      if (!grid || HUNTING_GALLERY.length === 0) return;
-      HUNTING_GALLERY.forEach(img => {
-        const el = document.createElement('img');
-        el.src = img.src; el.alt = img.alt || ''; el.loading = 'lazy';
-        grid.appendChild(el);
+    // Load hunting gallery from manifest
+    fetch('gallery-manifest.json')
+      .then(r => r.json())
+      .then(data => {
+        const grid = document.getElementById('hunting-gallery-grid');
+        const photos = data.hunting || [];
+        if (!grid || photos.length === 0) return;
+        photos.forEach(src => {
+          const el = document.createElement('img');
+          el.src = src;
+          el.alt = 'Channel Outfitters hunting';
+          el.loading = 'lazy';
+          grid.appendChild(el);
+        });
+        if (window.initLightbox) window.initLightbox();
       });
-    })();
   </script>
 </body>
 </html>
