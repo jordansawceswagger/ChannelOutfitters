@@ -9,11 +9,11 @@ fishing=()
 hunting=()
 
 shopt -s nullglob
-for f in images/fishing/*.jpg images/fishing/*.jpeg images/fishing/*.png images/fishing/*.webp; do
+for f in images/fishing/*.jpg images/fishing/*.JPG images/fishing/*.jpeg images/fishing/*.JPEG images/fishing/*.png images/fishing/*.PNG images/fishing/*.webp images/fishing/*.WEBP; do
   fishing+=("\"$f\"")
 done
 
-for f in images/hunting/*.jpg images/hunting/*.jpeg images/hunting/*.png images/hunting/*.webp; do
+for f in images/hunting/*.jpg images/hunting/*.JPG images/hunting/*.jpeg images/hunting/*.JPEG images/hunting/*.png images/hunting/*.PNG images/hunting/*.webp images/hunting/*.WEBP; do
   hunting+=("\"$f\"")
 done
 shopt -u nullglob
