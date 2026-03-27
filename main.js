@@ -120,13 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // --- Contact form (static — sends to Formspree or similar) ---
+  // --- Contact form (Formspree + Klaviyo) ---
   const contactForm = document.getElementById('contact-form');
   if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      // Collect data for Klaviyo identify
       const fd = new FormData(contactForm);
+      // Klaviyo identify
       if (window._learnq) {
         const profile = { '$email': fd.get('email') };
         if (fd.get('firstName')) profile['$first_name'] = fd.get('firstName');
@@ -138,7 +138,20 @@ document.addEventListener('DOMContentLoaded', () => {
           message: fd.get('message') || ''
         }]);
       }
-      contactForm.innerHTML = '<p style="font-family:var(--font-display);font-size:1.2rem;color:var(--co-green-dark);text-align:center;padding:24px;">Got it! We\'ll get right back to you.</p>';
+      // Submit to Formspree
+      fetch(contactForm.action, {
+        method: 'POST',
+        body: fd,
+        headers: { 'Accept': 'application/json' }
+      }).then(r => {
+        if (r.ok) {
+          contactForm.innerHTML = '<p style="font-family:var(--font-display);font-size:1.2rem;color:var(--co-green-dark);text-align:center;padding:24px;">Got it! We\'ll get right back to you.</p>';
+        } else {
+          contactForm.innerHTML = '<p style="font-family:var(--font-display);font-size:1.2rem;color:var(--co-red);text-align:center;padding:24px;">Something went wrong. Please email us at channeloutfitters1@gmail.com.</p>';
+        }
+      }).catch(() => {
+        contactForm.innerHTML = '<p style="font-family:var(--font-display);font-size:1.2rem;color:var(--co-red);text-align:center;padding:24px;">Something went wrong. Please email us at channeloutfitters1@gmail.com.</p>';
+      });
     });
   }
 
