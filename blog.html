@@ -3,33 +3,78 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Blog | Channel Outfitters</title>
-  <meta name="description" content="Field reports, river conditions and hunting tips from Channel Outfitters.">
+  <title>Journal | Channel Outfitters</title>
+  <meta name="description" content="Field reports, river conditions, hunting stories and trip planning tips from the Channel Outfitters guides.">
+  <meta property="og:title" content="Journal | Channel Outfitters">
+  <meta property="og:url" content="https://www.channeloutfitters.com/blog">
+  <meta name="google-site-verification" content="OiZjuG-9-Vakc2Jhupw1lgpmAU3mmCfGSovcps-nqvg">
+  <meta name="facebook-domain-verification" content="d261uqjnm0uju84lj01fwl7dw3b2ds">
   <link rel="canonical" href="https://www.channeloutfitters.com/blog">
   <link rel="stylesheet" href="style.css">
   <script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=Tcs7vy"></script>
 </head>
 <body>
-  <nav class="nav"><div class="nav-inner"><a href="index.html" class="nav-logo"><img src="images/logo.png" alt="Channel Outfitters" onerror="this.style.display='none'"></a><button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button><ul class="nav-links"><li><a href="about.html">About Us</a></li><li><a href="guided-trips.html">Guided Trips</a></li><li><a href="hunting.html">Big-Game Hunts</a></li><li><a href="lodging.html">Lodging</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li><li><a href="blog.html" class="active">Blog</a></li><li><a href="tel:4062612772" class="nav-phone"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/></svg> 406-261-2772</a></li></ul></div></nav>
+  <nav class="nav"><div class="nav-inner"><a href="index.html" class="nav-logo"><img src="images/logo.png" alt="Channel Outfitters" onerror="this.style.display='none'"></a><button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button><ul class="nav-links"><li><a href="about.html">About Us</a></li><li><a href="guided-trips.html">Guided Trips</a></li><li><a href="hunting.html">Big-Game Hunts</a></li><li><a href="lodging.html">Lodging</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="contact.html">Contact</a></li><li><a href="blog.html" class="active">Journal</a></li><li><a href="tel:4062612772" class="nav-phone"><svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328z"/></svg> 406-261-2772</a></li></ul></div></nav>
 
-  <section style="margin-top:var(--nav-h);padding:120px 0;text-align:center;">
+  <section style="margin-top:var(--nav-h);padding:60px 0 40px;">
     <div class="container">
-      <h1 style="margin-bottom:16px;">Blog</h1>
-      <p style="font-size:1.1rem;max-width:500px;margin:0 auto 40px;">Field reports, river conditions and trip stories coming soon.</p>
-      <div class="blog-gate" style="max-width:520px;margin:0 auto;">
-        <h3>Get Notified When We Post</h3>
-        <p>Sign up to get our field reports and trip planning tips delivered to your inbox.</p>
+      <h1 style="margin-bottom:8px;">Journal</h1>
+      <p style="max-width:700px;margin-bottom:48px;font-size:1.05rem;opacity:.8;">Field reports from the Missouri River, trip planning tips, and stories from 25+ years guiding in Montana.</p>
+
+      <!-- Signup strip above the grid -->
+      <div class="blog-gate" style="max-width:620px;margin:0 0 56px;">
+        <h3>New reports in your inbox</h3>
+        <p>Get field reports, river conditions, and trip openings as we post them.</p>
         <form id="blog-gate-form" class="blog-gate-form">
           <input type="email" name="email" placeholder="Your email" required>
-          <input type="tel" name="phone" placeholder="Phone (optional)">
           <button type="submit" class="btn btn-primary">Subscribe</button>
         </form>
         <p style="margin-top:12px;opacity:.4;font-size:.8rem;">No spam. Unsubscribe anytime.</p>
       </div>
+
+      <div class="blog-grid" id="blog-grid">
+        <!-- JS populates this from blog-manifest.json -->
+      </div>
     </div>
   </section>
 
-  <footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-about"><img src="images/logo.png" alt="Channel Outfitters" style="height:60px;margin-bottom:12px;" onerror="this.style.display='none'"><p>Montana's Missouri River fly fishing specialist.</p><div class="footer-social"><a href="https://www.facebook.com/channeloutfitters" target="_blank" rel="noopener noreferrer">FB</a><a href="https://www.instagram.com/channel_outfitters" target="_blank" rel="noopener noreferrer">IG</a></div></div><div><h4>Trips</h4><ul class="footer-links"><li><a href="guided-trips.html">Guided Fly Fishing</a></li><li><a href="hunting.html">Trophy Hunting</a></li><li><a href="lodging.html">Lodging</a></li><li><a href="gallery.html">Gallery</a></li></ul></div><div><h4>Company</h4><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="blog.html">Blog</a></li><li><a href="contact.html">Contact</a></li></ul></div><div><h4>Contact</h4><ul class="footer-links"><li><a href="tel:4062612772">406-261-2772</a></li><li><a href="mailto:channeloutfitters1@gmail.com">channeloutfitters1@gmail.com</a></li><li style="opacity:.5;font-size:.85rem;margin-top:10px;">Channel Outfitters, LLC<br>Outfitter #7886<br>Bigfork, Montana</li></ul></div></div><div class="footer-bottom">&copy; 2026 Channel Outfitters, LLC. All rights reserved. · <a href="privacy.html">Privacy Policy</a></div></div></footer>
+  <section class="contact-strip"><div class="container"><h2>Ready for Your Own Trip?</h2><p>Call Holly to check availability and get your trip on the calendar.</p><div class="contact-methods"><a href="tel:4062612772" class="contact-method"><span>Call or Text</span>406-261-2772</a><a href="mailto:channeloutfitters1@gmail.com" class="contact-method"><span>Email</span>channeloutfitters1@gmail.com</a></div></div></section>
+
+  <footer class="footer"><div class="container"><div class="footer-grid"><div class="footer-about"><img src="images/logo.png" alt="Channel Outfitters" style="height:60px;margin-bottom:12px;" onerror="this.style.display='none'"><p>Montana's Missouri River fly fishing specialist. Guided fly fishing trips and trophy hunting since 1998.</p><div class="footer-social"><a href="https://www.facebook.com/channeloutfitters" target="_blank" rel="noopener noreferrer">FB</a><a href="https://www.instagram.com/channel_outfitters" target="_blank" rel="noopener noreferrer">IG</a></div></div><div><h4>Trips</h4><ul class="footer-links"><li><a href="guided-trips.html">Guided Fly Fishing</a></li><li><a href="hunting.html">Trophy Hunting</a></li><li><a href="lodging.html">Lodging</a></li><li><a href="gallery.html">Gallery</a></li></ul></div><div><h4>Company</h4><ul class="footer-links"><li><a href="about.html">About Us</a></li><li><a href="blog.html">Journal</a></li><li><a href="contact.html">Contact</a></li></ul></div><div><h4>Contact</h4><ul class="footer-links"><li><a href="tel:4062612772">406-261-2772</a></li><li><a href="mailto:channeloutfitters1@gmail.com">channeloutfitters1@gmail.com</a></li><li style="opacity:.5;font-size:.85rem;margin-top:10px;">Channel Outfitters, LLC<br>Outfitter #7886<br>Bigfork, Montana</li></ul></div></div><div class="footer-bottom">&copy; 2026 Channel Outfitters, LLC. All rights reserved. · <a href="privacy.html">Privacy Policy</a></div></div></footer>
+
   <script src="main.js"></script>
+  <script>
+    // Load posts from manifest (newest first)
+    fetch('blog-manifest.json')
+      .then(r => r.json())
+      .then(data => {
+        const grid = document.getElementById('blog-grid');
+        const posts = (data.posts || []).slice().sort((a,b) => (b.date || '').localeCompare(a.date || ''));
+        if (!grid || posts.length === 0) {
+          grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;opacity:.5;font-style:italic;padding:40px 0;">First field reports coming soon.</p>';
+          return;
+        }
+        posts.forEach(p => {
+          const card = document.createElement('a');
+          card.href = 'blog/' + p.slug + '.html';
+          card.className = 'blog-card';
+          card.style.display = 'block';
+          card.style.textDecoration = 'none';
+          card.style.color = 'inherit';
+          const imgHTML = p.image
+            ? `<img src="${p.image}" alt="${p.title}" class="blog-card-img" loading="lazy">`
+            : `<div class="blog-card-img img-placeholder">CHANNEL OUTFITTERS</div>`;
+          card.innerHTML = `
+            ${imgHTML}
+            <div class="blog-card-body">
+              <div class="date">${p.dateDisplay || p.date || ''}</div>
+              <h3>${p.title}</h3>
+              <p>${p.excerpt || ''}</p>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      });
+  </script>
 </body>
 </html>
