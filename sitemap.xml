@@ -116,11 +116,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.channeloutfitters.com/blog/the-mo-is-fishing-well.html</loc>
-    <lastmod>2026-04-25</lastmod>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://www.channeloutfitters.com/blog/two-two-footers-in-one-day.html</loc>
     <lastmod>2026-04-25</lastmod>
     <priority>0.6</priority>
@@ -133,6 +128,11 @@
   <url>
     <loc>https://www.channeloutfitters.com/blog/when-your-son-grows-up-to-be-a-guide.html</loc>
     <lastmod>2026-04-25</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.channeloutfitters.com/blog/another-season.html</loc>
+    <lastmod>2026-04-24</lastmod>
     <priority>0.6</priority>
   </url>
 </urlset>
