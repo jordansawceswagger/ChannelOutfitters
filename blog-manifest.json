@@ -1,6 +1,15 @@
 {
   "posts": [
     {
+      "slug": "dry-fly-fishing-report-june-2026",
+      "title": "Fly-Fishing Report",
+      "date": "2026-05-28",
+      "dateDisplay": "May 28, 2026",
+      "excerpt": "As we approach June the Missouri River is on fire for dry-fly anglers. Mayfly and Caddis hatches are early and the dry-fly window is open right now.",
+      "image": "images/blog/dry-fly-fishing-report-june-2026.jpg",
+      "category": "fishing"
+    },
+    {
       "slug": "another-season",
       "title": "Another Season",
       "date": "2026-04-19",
