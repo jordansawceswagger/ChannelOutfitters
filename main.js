@@ -155,6 +155,142 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // --- Signup band (Klaviyo subscribe + optional Formspree inquiry) ---
+  // Injected after every .contact-strip so it lives under every CTA without
+  // having to maintain the markup in eight HTML files.
+  const KLAVIYO_COMPANY_ID = 'Tcs7vy';
+  const KLAVIYO_LIST_ID = 'Vb6jsz';
+  const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xbdpdgqa';
+
+  function getSourcePage() {
+    const last = (window.location.pathname.split('/').pop() || 'index.html').replace('.html', '');
+    return last || 'index';
+  }
+
+  function buildSignupBand() {
+    const strips = document.querySelectorAll('.contact-strip');
+    if (!strips.length) return;
+    const source = getSourcePage();
+    strips.forEach(strip => {
+      if (strip.nextElementSibling && strip.nextElementSibling.classList.contains('signup-strip')) return;
+      const band = document.createElement('section');
+      band.className = 'signup-strip';
+      band.innerHTML = '' +
+        '<div class="signup-inner">' +
+          '<div class="signup-copy">' +
+            '<h3>Reports + Last-Minute Openings</h3>' +
+            '<p>Get Lindsey\'s fishing reports and a heads-up on cancellations and prime dates on the Mo\'.</p>' +
+          '</div>' +
+          '<form class="signup-form" data-source="' + source + '" novalidate>' +
+            '<div class="signup-row">' +
+              '<input type="email" name="email" placeholder="your@email.com" required autocomplete="email" aria-label="Email address">' +
+              '<button type="submit">Sign Me Up</button>' +
+            '</div>' +
+            '<button type="button" class="signup-toggle" aria-expanded="false">Have a question? Add a note &rarr;</button>' +
+            '<div class="signup-msg" hidden>' +
+              '<textarea name="message" placeholder="Trip type, dates, party size, anything else..." rows="3" aria-label="Your message"></textarea>' +
+              '<small>Adding a note sends Holly a direct email as well.</small>' +
+            '</div>' +
+            '<p class="signup-status" role="status" aria-live="polite"></p>' +
+          '</form>' +
+        '</div>';
+      strip.insertAdjacentElement('afterend', band);
+      wireSignupForm(band.querySelector('.signup-form'));
+    });
+  }
+
+  function wireSignupForm(form) {
+    const toggle = form.querySelector('.signup-toggle');
+    const msgWrap = form.querySelector('.signup-msg');
+    toggle.addEventListener('click', () => {
+      const isOpen = !msgWrap.hasAttribute('hidden');
+      if (isOpen) {
+        msgWrap.setAttribute('hidden', '');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.innerHTML = 'Have a question? Add a note &rarr;';
+      } else {
+        msgWrap.removeAttribute('hidden');
+        toggle.setAttribute('aria-expanded', 'true');
+        toggle.innerHTML = 'Hide note &uarr;';
+        msgWrap.querySelector('textarea').focus();
+      }
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = form.querySelector('.signup-status');
+      const emailInput = form.querySelector('input[name="email"]');
+      const email = emailInput.value.trim();
+      const message = (form.querySelector('textarea[name="message"]') || {}).value || '';
+      const source = form.dataset.source || 'unknown';
+      if (!email) return;
+      status.textContent = 'Sending...';
+
+      // 1) Klaviyo legacy identify/track — matches site-wide pattern
+      if (window._learnq) {
+        window._learnq.push(['identify', { '$email': email, 'source_page': source }]);
+        window._learnq.push(['track', 'Newsletter Band Signup', {
+          source_page: source,
+          has_message: !!message.trim()
+        }]);
+      }
+
+      const tasks = [];
+
+      // 2) Klaviyo client subscribe — actually adds them to list Vb6jsz
+      // (triggers any flows attached to that list). Public company_id only,
+      // no secret key in the browser.
+      tasks.push(fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + KLAVIYO_COMPANY_ID, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'revision': '2024-10-15' },
+        body: JSON.stringify({
+          data: {
+            type: 'subscription',
+            attributes: {
+              custom_source: 'Website signup band — ' + source,
+              profile: {
+                data: {
+                  type: 'profile',
+                  attributes: { email: email }
+                }
+              }
+            },
+            relationships: {
+              list: { data: { type: 'list', id: KLAVIYO_LIST_ID } }
+            }
+          }
+        })
+      }).catch(() => null));
+
+      // 3) Formspree — only if they actually typed an inquiry. Keeps Holly's
+      // inbox from being flooded with bare list signups.
+      if (message.trim()) {
+        const fd = new FormData();
+        fd.append('email', email);
+        fd.append('message', message.trim());
+        fd.append('source_page', source);
+        fd.append('_subject', 'Website inquiry from ' + source);
+        tasks.push(fetch(FORMSPREE_ENDPOINT, {
+          method: 'POST',
+          body: fd,
+          headers: { 'Accept': 'application/json' }
+        }).catch(() => null));
+      }
+
+      try {
+        await Promise.allSettled(tasks);
+        const note = message.trim()
+          ? 'You\'re in. Holly will follow up on your note.'
+          : 'You\'re in. Watch your inbox for Lindsey\'s next report.';
+        form.innerHTML = '<p class="signup-success">' + note + '</p>';
+      } catch (err) {
+        status.textContent = 'Something went wrong. Email channeloutfitters1@gmail.com.';
+      }
+    });
+  }
+
+  buildSignupBand();
+
   // --- Smooth scroll ---
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {

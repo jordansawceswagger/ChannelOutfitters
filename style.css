@@ -144,6 +144,32 @@ h3{font-size:clamp(1.1rem,2vw,1.4rem);color:var(--co-red);letter-spacing:.05em}
 .contact-method{color:#fff!important;font-family:var(--font-display);font-size:1.15rem;letter-spacing:.04em}
 .contact-method span{display:block;font-family:var(--font-body);font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;opacity:.7;margin-bottom:4px}
 
+/* SIGNUP STRIP — injected by main.js after every .contact-strip
+   Klaviyo (list Vb6jsz) + optional Formspree inquiry pipeline */
+.signup-strip{background:var(--co-charcoal);color:var(--co-cream);padding:44px 0;border-top:3px solid var(--co-gold)}
+.signup-inner{display:grid;grid-template-columns:1fr 1.2fr;gap:40px;align-items:center;max-width:var(--max-w);margin:0 auto;padding:0 24px}
+.signup-copy h3{color:var(--co-gold);margin-bottom:6px;font-size:1.3rem}
+.signup-copy p{color:rgba(245,240,232,.82);font-size:.95rem;margin:0;line-height:1.55}
+.signup-form{display:flex;flex-direction:column;gap:10px}
+.signup-row{display:flex;gap:8px}
+.signup-row input{flex:1;padding:12px 14px;border:1px solid var(--co-tan);border-radius:3px;background:#fff;color:var(--co-text);font-family:var(--font-body);font-size:.95rem}
+.signup-row input:focus{outline:none;border-color:var(--co-gold)}
+.signup-row button{background:var(--co-red);color:#fff;border:none;padding:12px 22px;border-radius:3px;font-family:var(--font-display);letter-spacing:.05em;font-size:.95rem;cursor:pointer;transition:background .2s;text-transform:uppercase;white-space:nowrap}
+.signup-row button:hover{background:var(--co-red-light)}
+.signup-toggle{background:none;border:none;color:var(--co-tan);text-align:left;font-family:var(--font-body);font-size:.85rem;cursor:pointer;padding:0;align-self:flex-start;text-decoration:underline}
+.signup-toggle:hover{color:var(--co-gold)}
+.signup-msg{display:flex;flex-direction:column;gap:4px}
+.signup-msg textarea{width:100%;padding:10px 12px;border:1px solid var(--co-tan);border-radius:3px;background:#fff;color:var(--co-text);font-family:var(--font-body);font-size:.95rem;resize:vertical;min-height:80px}
+.signup-msg textarea:focus{outline:none;border-color:var(--co-gold)}
+.signup-msg small{color:rgba(245,240,232,.6);font-size:.78rem}
+.signup-status{font-size:.85rem;color:var(--co-tan);min-height:1em;margin:0}
+.signup-success{color:var(--co-gold);font-family:var(--font-display);font-size:1.1rem;letter-spacing:.04em;text-align:center;padding:12px 0;margin:0}
+@media(max-width:760px){
+  .signup-inner{grid-template-columns:1fr;gap:18px;text-align:center}
+  .signup-row{flex-direction:column}
+  .signup-toggle{align-self:center}
+}
+
 /* CONTACT FORM */
 .contact-form-section{position:relative;background:var(--co-cream-dark);padding:80px 0}
 .contact-bg-map{position:absolute;inset:0;opacity:.15;background-size:cover;background-position:center}
