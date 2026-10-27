@@ -88,4 +88,58 @@ with open("blog-manifest.json", "w", encoding="utf-8") as f:
 print(f"blog-manifest.json updated: {len(posts)} posts")
 for p in posts:
     print(f"  - {p['slug']}.html  [{p['date'] or 'NO DATE'}]  {p['title']}")
+# ---- SEO: BlogPosting schema on every post, Service schema on service pages, sitemap ----
+import html as _html
+SITE = "https://www.channeloutfitters.com"
+BIZ = {"@id": SITE + "/#business"}
+
+def set_ldjson(page_html, key, data):
+    block = f'<script type="application/ld+json" data-seo="{key}">' + json.dumps(data, ensure_ascii=False) + '</script>'
+    pat = re.compile(r'<script type="application/ld\+json" data-seo="' + re.escape(key) + r'">.*?</script>', re.S)
+    if pat.search(page_html):
+        return pat.sub(lambda m: block, page_html)
+    return page_html.replace("</head>", "  " + block + "\n</head>", 1)
+
+for p in posts:
+    path = f"blog/{p['slug']}.html"
+    page = open(path, encoding="utf-8").read()
+    data = {"@context": "https://schema.org", "@type": "BlogPosting",
+            "headline": _html.unescape(p["title"]),
+            "url": f"{SITE}/blog/{p['slug']}.html",
+            "mainEntityOfPage": f"{SITE}/blog/{p['slug']}.html",
+            "author": {"@type": "Organization", "name": "Channel Outfitters"},
+            "publisher": BIZ}
+    if p["date"]: data["datePublished"] = p["date"]
+    if p["excerpt"]: data["description"] = _html.unescape(p["excerpt"])
+    if p["image"]: data["image"] = f"{SITE}/{p['image']}"
+    new = set_ldjson(page, "post", data)
+    if new != page:
+        open(path, "w", encoding="utf-8").write(new)
+
+SERVICES = {"guided-trips.html": "Guided fly fishing trips", "hunting.html": "Guided big-game hunts", "lodging.html": "Lodging"}
+for fname, stype in SERVICES.items():
+    if not os.path.exists(fname):
+        continue
+    page = open(fname, encoding="utf-8").read()
+    m = re.search(r'<meta name="description" content="([^"]*)"', page)
+    data = {"@context": "https://schema.org", "@type": "Service", "serviceType": stype,
+            "name": _html.unescape(extract_title(page)) or stype,
+            "url": f"{SITE}/{fname}", "provider": BIZ,
+            "areaServed": {"@type": "State", "name": "Montana"}}
+    if m: data["description"] = _html.unescape(m.group(1))
+    new = set_ldjson(page, "service", data)
+    if new != page:
+        open(fname, "w", encoding="utf-8").write(new)
+
+PAGES = [("", "1.0"), ("guided-trips.html", "0.8"), ("hunting.html", "0.8"), ("lodging.html", "0.7"),
+         ("about.html", "0.7"), ("gallery.html", "0.6"), ("blog.html", "0.7"), ("contact.html", "0.6")]
+today = datetime.now().strftime("%Y-%m-%d")
+urls = [(f"{SITE}/{u}", today, pr) for u, pr in PAGES if u == "" or os.path.exists(u)]
+urls += [(f"{SITE}/blog/{p['slug']}.html", p["date"] or today, "0.6") for p in posts]
+with open("sitemap.xml", "w", encoding="utf-8") as f:
+    f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
+    for loc, lm, pr in urls:
+        f.write(f"  <url>\n    <loc>{loc}</loc>\n    <lastmod>{lm}</lastmod>\n    <priority>{pr}</priority>\n  </url>\n")
+    f.write("</urlset>\n")
+print(f"sitemap.xml: {len(urls)} URLs · schema on {len(posts)} posts + service pages")
 PYEOF
