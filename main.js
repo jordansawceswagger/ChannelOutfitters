@@ -1,3 +1,30 @@
+// --- Meta pixel (Channel Outfitters dataset 882540140312214) ---
+// Loaded here because every page includes main.js. Events:
+//   PageView (all pages) · ViewContent (trips/hunting/lodging) ·
+//   Lead (signup band, blog gate, contact form) · Contact (tap on phone/email)
+(function (f, b, e, v, n, t, s) {
+  if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+  if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
+  t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+})(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '882540140312214');
+fbq('track', 'PageView');
+(function () {
+  var page = (location.pathname.split('/').pop() || 'index.html');
+  var content = { 'guided-trips.html': 'Guided fishing trips', 'hunting.html': 'Hunts', 'lodging.html': 'Lodging' }[page];
+  if (content) fbq('track', 'ViewContent', { content_name: content });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href^="mailto:"]');
+    if (a) fbq('track', 'Contact', { method: a.getAttribute('href').split(':')[0] });
+  });
+  document.addEventListener('submit', function (e) {
+    var f = e.target;
+    if (f.matches('.signup-form, #blog-gate-form') || f === document.getElementById('contact-form') || (f.action || '').indexOf('formspree') > -1) {
+      fbq('track', 'Lead', { content_name: f.classList.contains('signup-form') ? 'Signup band' : (f.id || 'form') });
+    }
+  }, true);
+})();
+
 document.addEventListener('DOMContentLoaded', () => {
   // --- Mobile Nav ---
   const toggle = document.querySelector('.nav-toggle');
