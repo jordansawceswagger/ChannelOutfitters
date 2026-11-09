@@ -10,8 +10,8 @@
 fbq('init', '882540140312214');
 fbq('track', 'PageView');
 (function () {
-  var page = (location.pathname.split('/').pop() || 'index.html');
-  var content = { 'guided-trips.html': 'Guided fishing trips', 'hunting.html': 'Hunts', 'lodging.html': 'Lodging' }[page];
+  var page = (location.pathname.split('/').pop() || 'index').replace(/\.html$/, '');
+  var content = { 'guided-trips': 'Guided fishing trips', 'hunting': 'Hunts', 'lodging': 'Lodging' }[page];
   if (content) fbq('track', 'ViewContent', { content_name: content });
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href^="mailto:"]');
@@ -19,8 +19,14 @@ fbq('track', 'PageView');
   });
   document.addEventListener('submit', function (e) {
     var f = e.target;
-    if (f.matches('.signup-form, #blog-gate-form') || f === document.getElementById('contact-form') || (f.action || '').indexOf('formspree') > -1) {
-      fbq('track', 'Lead', { content_name: f.classList.contains('signup-form') ? 'Signup band' : (f.id || 'form') });
+    // Lead = email signups only (signup band, blog gate). The contact form is
+    // left out so bot submissions can't train Meta's optimization.
+    var trap = f.querySelector && f.querySelector('input[name="_gotcha"]');
+    if (trap && trap.value) return;
+    var em = f.querySelector && f.querySelector('input[type="email"]');
+    if (em && !em.value.trim()) return;
+    if (f.matches('.signup-form, #blog-gate-form')) {
+      fbq('track', 'Lead', { content_name: f.classList.contains('signup-form') ? 'Signup band' : 'Blog gate' });
     }
   }, true);
 })();
@@ -153,6 +159,12 @@ document.addEventListener('DOMContentLoaded', () => {
     contactForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const fd = new FormData(contactForm);
+      // Honeypot: real people never see or fill _gotcha. Bots that do get a
+      // fake success and nothing is sent to Klaviyo or Formspree.
+      if (fd.get('_gotcha')) {
+        contactForm.innerHTML = '<p style="font-family:var(--font-display);font-size:1.2rem;color:var(--co-green-dark);text-align:center;padding:24px;">Got it! We\'ll get right back to you.</p>';
+        return;
+      }
       // Klaviyo identify
       if (window._learnq) {
         const profile = { '$email': fd.get('email') };
@@ -209,6 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '<p>Get Lindsey\'s fishing reports and a heads-up on cancellations and prime dates on the Mo\'.</p>' +
           '</div>' +
           '<form class="signup-form" data-source="' + source + '" novalidate>' +
+            '<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">' +
             '<div class="signup-row">' +
               '<input type="email" name="email" placeholder="your@email.com" required autocomplete="email" aria-label="Email address">' +
               '<button type="submit">Sign Me Up</button>' +
@@ -251,6 +264,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const message = (form.querySelector('textarea[name="message"]') || {}).value || '';
       const source = form.dataset.source || 'unknown';
       if (!email) return;
+      const trap = form.querySelector('input[name="_gotcha"]');
+      if (trap && trap.value) { form.innerHTML = '<p class="signup-status">You\'re in.</p>'; return; }
       status.textContent = 'Sending...';
 
       // 1) Klaviyo legacy identify/track — matches site-wide pattern
