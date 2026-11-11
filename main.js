@@ -1,7 +1,7 @@
 // --- Meta pixel (Channel Outfitters dataset 882540140312214) ---
 // Loaded here because every page includes main.js. Events:
 //   PageView (all pages) · ViewContent (trips/hunting/lodging) ·
-//   Lead (signup band, blog gate, contact form) · Contact (tap on phone/email)
+//   Lead (signup band, blog gate, gift request) · Contact (tap on phone/email)
 (function (f, b, e, v, n, t, s) {
   if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
   if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0'; n.queue = [];
@@ -11,7 +11,7 @@ fbq('init', '882540140312214');
 fbq('track', 'PageView');
 (function () {
   var page = (location.pathname.split('/').pop() || 'index').replace(/\.html$/, '');
-  var content = { 'guided-trips': 'Guided fishing trips', 'hunting': 'Hunts', 'lodging': 'Lodging' }[page];
+  var content = { 'guided-trips': 'Guided fishing trips', 'hunting': 'Hunts', 'lodging': 'Lodging', 'gift': 'Gift trip' }[page];
   if (content) fbq('track', 'ViewContent', { content_name: content });
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href^="tel:"], a[href^="mailto:"]');
@@ -19,14 +19,14 @@ fbq('track', 'PageView');
   });
   document.addEventListener('submit', function (e) {
     var f = e.target;
-    // Lead = email signups only (signup band, blog gate). The contact form is
-    // left out so bot submissions can't train Meta's optimization.
+    // Lead = email signups (signup band, blog gate) and gift requests. The
+    // contact form is left out so bot submissions can't train Meta's optimization.
     var trap = f.querySelector && f.querySelector('input[name="_gotcha"]');
     if (trap && trap.value) return;
     var em = f.querySelector && f.querySelector('input[type="email"]');
     if (em && !em.value.trim()) return;
-    if (f.matches('.signup-form, #blog-gate-form')) {
-      fbq('track', 'Lead', { content_name: f.classList.contains('signup-form') ? 'Signup band' : 'Blog gate' });
+    if (f.matches('.signup-form, #blog-gate-form, #gift-form')) {
+      fbq('track', 'Lead', { content_name: f.id === 'gift-form' ? 'Gift request' : f.classList.contains('signup-form') ? 'Signup band' : 'Blog gate' });
     }
   }, true);
 })();
@@ -191,6 +191,36 @@ document.addEventListener('DOMContentLoaded', () => {
       }).catch(() => {
         contactForm.innerHTML = '<p style="font-family:var(--font-display);font-size:1.2rem;color:var(--co-red);text-align:center;padding:24px;">Something went wrong. Please email us at channeloutfitters1@gmail.com.</p>';
       });
+    });
+  }
+
+  // --- Gift trip request (gift.html) ---
+  const giftForm = document.getElementById('gift-form');
+  if (giftForm) {
+    document.querySelectorAll('.gift-pick').forEach((a) => {
+      a.addEventListener('click', () => {
+        const sel = document.getElementById('g-trip');
+        if (sel) sel.value = a.dataset.trip;
+      });
+    });
+    const done = (msg, color) => {
+      giftForm.innerHTML = '<p style="font-family:var(--font-display);font-size:1.2rem;color:' + color + ';text-align:center;padding:24px;">' + msg + '</p>';
+    };
+    giftForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const fd = new FormData(giftForm);
+      if (fd.get('_gotcha')) { done('Got it. Holly will call you soon.', 'var(--co-green-dark)'); return; }
+      if (window._learnq) {
+        const profile = { '$email': fd.get('email') };
+        if (fd.get('name')) profile['$first_name'] = String(fd.get('name')).split(' ')[0];
+        if (fd.get('phone')) profile['$phone_number'] = fd.get('phone');
+        window._learnq.push(['identify', profile]);
+        window._learnq.push(['track', 'Gift Trip Request', { trip: fd.get('trip') || '', recipient: fd.get('recipient') || '' }]);
+      }
+      fetch(giftForm.action, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } })
+        .then((r) => r.ok ? done('Got it. Holly will call you soon.', 'var(--co-green-dark)')
+                          : done('Something went wrong. Call Holly at 406-261-2772.', 'var(--co-red)'))
+        .catch(() => done('Something went wrong. Call Holly at 406-261-2772.', 'var(--co-red)'));
     });
   }
 
